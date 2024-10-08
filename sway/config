@@ -13,7 +13,7 @@ default_border pixel
 default_floating_border pixel
 
 #output * bg #000000 solid_color
-output * bg ~/Pictures/wallpapers/site1920.png stretch
+output * bg ~/Pictures/wallpapers/mmm.png stretch
 
 exec swayidle -w \
           timeout 1200 'swaymsg "output * power off"' \
