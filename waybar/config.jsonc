@@ -17,12 +17,10 @@
     ],
     "modules-right": [
         "pulseaudio",
-        "power-profiles-daemon",
         "cpu",
         "disk",
         "memory",
         "temperature",
-        "keyboard-state",
         "sway/language",
         "battery",
         "clock",
@@ -44,15 +42,6 @@
           "urgent": "",
            "focused": "",
             "default": ""
-        }
-    },
-    "keyboard-state": {
-        "numlock": true,
-        "capslock": true,
-        "format": "{name} {icon}",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
         }
     },
     "sway/window": {
@@ -150,17 +139,6 @@
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""]
-    },
-    "power-profiles-daemon": {
-      "format": "{icon}",
-      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-      "tooltip": true,
-      "format-icons": {
-        "default": "",
-        "performance": "",
-        "balanced": "",
-        "power-saver": ""
-      }
     },
     "pulseaudio": {
         "scroll-step": 5, // %, can be a float
