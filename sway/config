@@ -13,7 +13,8 @@ default_border pixel
 default_floating_border pixel
 
 #output * bg #000000 solid_color
-output * bg ~/Pictures/wallpapers/mmm.png stretch
+output * bg ~/Pictures/wallpapers/konata.jpg stretch
+#output * bg ~/Pictures/wallpapers/miku.jpeg stretch
 
 exec swayidle -w \
           timeout 1200 'swaymsg "output * power off"' \
@@ -27,6 +28,7 @@ input "1:1:AT_Translated_Set_2_keyboard" {
 
 input type:touchpad {
     tap enabled
+    drag_lock disabled
     natural_scroll disabled
     tap_button_map lmr
 } 
@@ -37,20 +39,34 @@ bindsym --to-code {
     $mod+Home exec rofi -show calc -no-show-match -no-sort
 
     $mod+Shift+q kill
-
-    # $mod+z exec grimshot save area
-    # $mod+x exec grimshot copy area
-    # $mod+c exec grimshot save screen
-    # $mod+v exec grimshot copy screen
-
+    
+    $mod+Shift+z exec filename=$(date +"%Y-%m-%dT%H%M%S.png") && (slurp | grim -g - - > /tmp/$filename) && url=$(curl -F "reqtype=fileupload" -F "fileToUpload=@/tmp/$filename" -F "userhash=$CATBOX_USERHASH" https://catbox.moe/user/api.php) && wl-copy "$url" && notify-send -t 1000 "Copied $url"
+    $mod+Shift+x exec url=$(slurp | grim -g - - | curl -F "reqtype=fileupload" -F "time=1h" -F "fileToUpload=@-;filename=image.png" https://litterbox.catbox.moe/resources/internals/api.php) && wl-copy "$url" && notify-send -t 1000 "Copied $url" 
     $mod+z exec slurp | grim -g - $(xdg-user-dir PICTURES)/$(date +'%Y-%m-%dT%H%M%S.png') 
     $mod+x exec slurp | grim -g - - | wl-copy
     $mod+c exec grim $(xdg-user-dir PICTURES)/$(date +'%Y-%m-%dT%H%M%S.png') 
     $mod+v exec grim - | wl-copy
-
-
+    $mod+b exec swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | grim -g - - | wl-copy
+    
     $mod+Shift+f floating toggle
 }
+
+mode "present" {
+    # command starts mirroring
+    bindsym m mode "default"; exec wl-present mirror
+    # these commands modify an already running mirroring window
+    bindsym o mode "default"; exec wl-present set-output
+    bindsym r mode "default"; exec wl-present set-region
+    bindsym Shift+r mode "default"; exec wl-present unset-region
+    bindsym s mode "default"; exec wl-present set-scaling
+    bindsym f mode "default"; exec wl-present toggle-freeze
+    bindsym c mode "default"; exec wl-present custom
+
+    # return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+p mode "present"
 
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
@@ -206,3 +222,4 @@ include /etc/sway/config.d/*
 
 
 exec nm-applet --indicator
+exec way-displays > /tmp/way-displays.${XDG_VTNR}.${USER}.log 2>&1
