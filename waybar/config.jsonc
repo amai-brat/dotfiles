@@ -2,15 +2,14 @@
 {
     "layer": "top", // Waybar at top layer
     "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": "auto", // Waybar height (to be removed for auto height)
+    "height": "4px", // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 0, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
         "sway/workspaces",
         "sway/mode",
-        "sway/scratchpad",
-        "custom/media"
+        "sway/scratchpad"
     ],
     // "modules-center": [
         //"sway/window"
@@ -20,7 +19,9 @@
         "cpu",
         "disk",
         "memory",
-        "temperature",
+        "temperature#cpu",
+	"temperature#ram",
+	"temperature#gpu",
         "sway/language",
         "battery",
         "clock",
@@ -115,13 +116,26 @@
         },
         "interval": 5
     },
-    "temperature": {
+    "temperature#cpu": {
         // "thermal-zone": 2,
         // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
         "critical-threshold": 80,
+	"hwmon-path": "/sys/class/hwmon/hwmon6/temp1_input",
         // "format-critical": "{temperatureC}°C {icon}",
-        "format": "TEMP [{temperatureC}°C]",
+        "format": "CPU [{temperatureC}°C]",
         "format-icons": ["", "", ""],
+        "tooltip": false
+    },
+    "temperature#ram": {
+        "critical-threshold": 80,
+	"hwmon-path": "/sys/class/hwmon/hwmon8/temp1_input",
+        "format": "RAM [{temperatureC}°C]",
+        "tooltip": false
+    },
+    "temperature#gpu": {
+        "critical-threshold": 80,
+	"hwmon-path": "/sys/class/hwmon/hwmon5/temp1_input",
+        "format": "GPU [{temperatureC}°C]",
         "tooltip": false
     },
     "battery": {
